@@ -164,5 +164,5 @@ def dino_app()
             iotClient.publish(config.topic, json.dumps(message), 1)
         move_bot(img, robot_stop)
 
-if __name__ == main():
+if __name__ == "__main__":
     dino_app()
