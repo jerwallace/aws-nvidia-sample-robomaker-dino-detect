@@ -78,26 +78,26 @@ def main():
     # Pull in the app arguments. Today, this is just the logging level. 
     # TODO: Add other configuration settings. 
     if (DEBUG):
-        print("Starting logging service in debug mode.")
         logging.basicConfig(level=logging.DEBUG)
-        logging.info("Set logger to DEBUG mode.")
+        logger = logging.getLogger('dinodetect')
+        ddlogger.info("Set logger to DEBUG mode.")
     else:
         logging.basicConfig(level=logging.ERROR)
-        logging.info("Set logger to ERROR mode.")
+        logger.info("Set logger to ERROR mode.")
 
     # Load in the log config files from a local config as well as the default greengrass config.
-    logging.info("Loading app config file...")
+    ddlogger.info("Loading app config file...")
     with open('config.json') as json_config_file:
         config = json.load(json_config_file)
 
-    logging.info("Loading greengrass config file...")
+    ddlogger.info("Loading greengrass config file...")
     with open('/greengrass/config/config.json') as json_gg_config_file:
         gg_config = json.load(json_gg_config_file)
 
     # Initialize the JetBot Robot.
-    logging.info("Starting cuda...")
+    ddlogger.info("Starting cuda...")
     device = torch.device('cuda')
-    logging.info("Initializing robot on I2C Bus %i...", config.i2c_bus)
+    ddlogger.info("Initializing robot on I2C Bus %i...", config.i2c_bus)
     robot = Robot(i2c_bus=config.i2c_bus)
     camera = Camera.instance(width=config.image_size[0], height=config.image_size[1])
     mean = config.np_value * np.array(config.mean_values)
@@ -105,8 +105,8 @@ def main():
     settings.mean_roadfollow = torch.Tensor(config.mean_values).cuda().half()
     settings.std_roadfollow = torch.Tensor(config.std_values).cuda().half()
 
-    logging.info("Initializing ML models...")
-    logging.info("Road following model...")
+    ddlogger.info("Initializing ML models...")
+    ddlogger.info("Road following model...")
     model_roadfollow = torchvision.models.resnet18(pretrained=False)
     model_roadfollow.fc = torch.nn.Linear(512, 2)
     model_roadfollow.load_state_dict(torch.load(config.road_following_model))
@@ -114,7 +114,7 @@ def main():
     model = model_roadfollow.to(device)
     model = model_roadfollow.eval().half()
 
-    logging.info("Dino detection model...")
+    ddlogger.info("Dino detection model...")
     model_dinodet = torchvision.models.resnet18(pretrained=False)
     model_dinodet.fc = torch.nn.Linear(512, 6)
     model_dinodet.load_state_dict(torch.load(config.dino_detect_model))
@@ -125,7 +125,7 @@ def main():
     prev_class = config.prev_class
 
     # Initialize the AWS IoT Connection based on AWS Greengrass config. 
-    logging.info("Initializing AWS IoT...")
+    ddlogger.info("Initializing AWS IoT...")
     logger = logging.getLogger("AWSIoTPythonSDK.core")
     streamHandler = logging.StreamHandler()
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -138,7 +138,7 @@ def main():
     iotClient.configureCredentials(gg_config.coreThing.caPath, gg_config.coreThing.keyPath, gg_config.coreThing.certPath)
     iotClient.connect()
 
-    logging.info("Starting application loop...")
+    ddlogger.info("Starting application loop...")
     while True:
         settings.normalize = torchvision.transforms.Normalize(mean, stdev)
         img = camera.value
@@ -148,14 +148,14 @@ def main():
             prev_class = classes
             robot_stop = True
             if classes == 5:
-                logging.info("Found unknown dinosaur...")
+                ddlogger.info("Found unknown dinosaur...")
                 message = {
                     "dinosaur": "unknown",
                     "confidence": str(probs),
                     "image": base64.b64encode(img)
                 }
             else:
-                logging.info("Found %s...", config.dino_names[classes])
+                ddlogger.info("Found %s...", config.dino_names[classes])
                 message = {
                     "dinosaur": config.dino_names[classes],
                     "confidence": str(probs),
