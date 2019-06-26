@@ -79,7 +79,7 @@ def dino_app():
     # TODO: Add other configuration settings. 
     if (DEBUG):
         logging.basicConfig(format=FORMAT, level=logging.DEBUG)
-        logger = logging.getLogger('dino-detect')
+        ddlogger = logging.getLogger('dino-detect')
         ddlogger.info("Set logger to DEBUG mode.")
     else:
         logging.basicConfig(level=logging.ERROR)
