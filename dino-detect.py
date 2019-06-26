@@ -24,8 +24,8 @@ device = torch.device('cuda')
 config = None
 settings = {
     normalize: None,
-    mean_roadfollow = None,
-    std_roadfollow = None
+    mean_roadfollow: None,
+    std_roadfollow: None
 }
 angle = 0.0
 angle_last = 0.0
