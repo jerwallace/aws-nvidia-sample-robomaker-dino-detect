@@ -20,7 +20,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-D", "--debug_mode", action="store", dest="debug", default=True,
                     help="Run in debug mode...")
 
-device = torch.device('cuda')
+device = None
 config = None
 settings = {
     normalize: None,
@@ -76,7 +76,7 @@ def move_bot(image, robot_stop):
         robot.right_motor.value = max(min(config.speed_gain_slider - steering_slider, 1.0), 0.0)
 
 def main():
-    global config, settings
+    global config, settings, device
     # Pull in the app arguments. Today, this is just the logging level. 
     # TODO: Add other configuration settings. 
 
@@ -97,7 +97,9 @@ def main():
         gg_config = json.load(json_gg_config_file)
 
     # Initialize the JetBot Robot.
-    logging.info("Initializing robot...")
+    logging.info("Starting cuda...")
+    device = torch.device('cuda')
+    logging.info("Initializing robot on I2C Bus %i...", config.i2c_bus)
     robot = Robot(i2c_bus=config.i2c_bus)
     camera = Camera.instance(width=config.image_size[0], height=config.image_size[1])
     mean = config.np_value * np.array(config.mean_values)
@@ -155,7 +157,7 @@ def main():
                     image: base64.b64encode(img)
                 }
             else:
-                logging.info("Found "+config.dino_names[classes]+"...")
+                logging.info("Found %s...", config.dino_names[classes])
                 message = {
                     dinosaur: config.dino_names[classes],
                     confidence: str(probs),
