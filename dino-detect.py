@@ -154,7 +154,7 @@ def dino_app():
                     "image": base64.b64encode(img)
                 }
             else:
-                ddlogger.info("Found %s...", config['dino_names[classes])
+                ddlogger.info("Found %s...", config['dino_names'][classes])
                 message = {
                     "dinosaur": config['dino_names'][classes],
                     "confidence": str(probs),
