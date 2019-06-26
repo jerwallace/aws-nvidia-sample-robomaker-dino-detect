@@ -1,0 +1,22 @@
+{
+    "i2c_bus": 0,
+    "speed_gain_slider": 0.25,
+    "steering_gain_slider" : 0.11,
+    "steering_dgain_slider" : 0.10,
+    "steering_bias_slider" : 0.09,
+    "prev_class" : -1,
+    "mean_values": [0.485, 0.456, 0.406],
+    "std_values": [0.229, 0.224, 0.225],
+    "np_value": 255.0,
+    "dino_names": [
+        "Spinosaurus",
+        "Dilophosaurus",
+        "Stegosaurus",
+        "Triceratops",
+        "Brachiosaurus",
+        "Unknown"],
+    "topic": "dino-detect",
+    "road_following_model": "best_steering_model_xy.pth",
+    "dino_detect_model": "best_dinodet_model_xy.pth",
+    "image_size": [224,224]
+}
