@@ -132,7 +132,7 @@ def dino_app():
     logger.addHandler(streamHandler)
     
     iotClient = None
-    iotClient = AWSIoTMQTTClient('jetbot'+random.randint(1,101))
+    iotClient = AWSIoTMQTTClient('jetbot'+str(random.randint(1,101)))
     iotClient.configureEndpoint(gg_config['coreThing.iotHost'], 8843)
     iotClient.configureCredentials(gg_config['coreThing.caPath'], gg_config['coreThing.keyPath'], gg_config['coreThing.certPath'])
     iotClient.connect()
