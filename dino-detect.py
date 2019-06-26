@@ -16,8 +16,9 @@ import argparse
 from jetbot import Camera, Robot
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
 
+print("Starting")
 parser = argparse.ArgumentParser()
-parser.add_argument("-D", "--debug_mode", action="store", dest="debug", default=True,
+parser.add_argument("-D", "--debug", action="store", dest="debug", default=True,
                     help="Run in debug mode...")
 
 device = None
@@ -81,8 +82,8 @@ def main():
 
     # Pull in the app arguments. Today, this is just the logging level. 
     # TODO: Add other configuration settings. 
-
     if (args.debug):
+        print("Starting logging service in debug mode.")
         logging.basicConfig(level=logging.INFO)
         logging.info("Set logger to DEBUG mode.")
     else:
