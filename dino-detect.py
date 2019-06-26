@@ -27,6 +27,8 @@ settings = {
 angle = 0.0
 angle_last = 0.0
 
+logging.basicConfig(format=FORMAT, level=logging.DEBUG)
+
 def preprocess(camera_value):
     global device, settings
     x = camera_value
@@ -73,15 +75,10 @@ def move_bot(image, robot_stop):
         robot.right_motor.value = max(min(config.speed_gain_slider - steering_slider, 1.0), 0.0)
 
 def dino_app():    
-    global config, settings, device
+    global config, settings, device, logging
 
     # Pull in the app arguments. Today, this is just the logging level. 
     # TODO: Add other configuration settings. 
-    if (DEBUG):
-        logging.basicConfig(format=FORMAT, level=logging.DEBUG)
-    else:
-        logging.basicConfig(format=FORMAT, level=logging.ERROR)
-    
     ddlogger = logging.getLogger('dino-detect')
     ddlogger.info("Set logger to ERROR mode.")
 
