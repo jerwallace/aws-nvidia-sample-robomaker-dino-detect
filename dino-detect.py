@@ -76,12 +76,14 @@ def move_bot(image, robot_stop):
         robot.right_motor.value = max(min(config.speed_gain_slider - steering_slider, 1.0), 0.0)
 
 def main():
+    
     global config, settings, device
+
     # Pull in the app arguments. Today, this is just the logging level. 
     # TODO: Add other configuration settings. 
 
     if (args.debug):
-        logging.basicConfig(level=logging.DEBUG)
+        logging.basicConfig(level=logging.INFO)
         logging.info("Set logger to DEBUG mode.")
     else:
         logging.basicConfig(level=logging.ERROR)
