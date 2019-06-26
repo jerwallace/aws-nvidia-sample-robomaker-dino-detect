@@ -79,7 +79,7 @@ def main():
     # TODO: Add other configuration settings. 
     if (DEBUG):
         print("Starting logging service in debug mode.")
-        logging.basicConfig(level=logging.INFO)
+        logging.basicConfig(level=logging.DEBUG)
         logging.info("Set logger to DEBUG mode.")
     else:
         logging.basicConfig(level=logging.ERROR)
