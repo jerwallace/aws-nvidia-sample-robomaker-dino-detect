@@ -16,11 +16,6 @@ import argparse
 from jetbot import Camera, Robot
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
 
-print("Starting")
-parser = argparse.ArgumentParser()
-parser.add_argument("-D", "--debug", action="store", dest="debug", default=True,
-                    help="Run in debug mode...")
-
 device = None
 config = None
 settings = {
@@ -79,6 +74,12 @@ def move_bot(image, robot_stop):
 def main():
     
     global config, settings, device
+
+    parser = argparse.ArgumentParser(description='Run Dino Detect Application')
+    parser.add_argument("-D", "--debug", action="store", dest="debug", default=True,
+                    help="Run in debug mode...")
+    
+    args = parser.parse_args()
 
     # Pull in the app arguments. Today, this is just the logging level. 
     # TODO: Add other configuration settings. 
