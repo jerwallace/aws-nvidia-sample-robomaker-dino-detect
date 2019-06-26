@@ -35,7 +35,7 @@ def preprocess(camera_value):
     x = cv2.cvtColor(x, cv2.COLOR_BGR2RGB)
     x = x.transpose((2, 0, 1))
     x = torch.from_numpy(x).float()
-    x = settings.normalize(x)
+    x = settings['normalize'](x)
     x = x.to(device)
     x = x[None, ...]
     return x
@@ -44,7 +44,7 @@ def preprocess_roadfollow(image):
     global device, settings
     image = PIL.Image.fromarray(image)
     image = transforms.functional.to_tensor(image).to(device).half()
-    image.sub_(settings.mean_roadfollow[:, None, None]).div_(settings.std_roadfollow[:, None, None])
+    image.sub_(settings['mean_roadfollow'][:, None, None]).div_(settings['std_roadfollow'][:, None, None])
     return image[None, ...]
 
 def find_dino(change):
@@ -101,8 +101,8 @@ def dino_app():
     camera = Camera.instance(width=config['image_size'][0], height=config['image_size'][1])
     mean = config['np_value'] * np.array(config['mean_values'])
     stdev = config['np_value'] * np.array(config['std_values'])
-    settings.mean_roadfollow = torch.Tensor(config['mean_values']).cuda().half()
-    settings.std_roadfollow = torch.Tensor(config['std_values']).cuda().half()
+    settings['mean_roadfollow'] = torch.Tensor(config['mean_values']).cuda().half()
+    settings['std_roadfollow'] = torch.Tensor(config['std_values']).cuda().half()
 
     ddlogger.info("Initializing ML models...")
     ddlogger.info("Road following model...")
@@ -139,7 +139,7 @@ def dino_app():
 
     ddlogger.info("Starting application loop...")
     while True:
-        settings.normalize = torchvision.transforms.Normalize(mean, stdev)
+        settings['normalize'] = torchvision.transforms.Normalize(mean, stdev)
         img = camera.value
         robot_stop = False
         probs, classes = find_dino({'new': img}) 
