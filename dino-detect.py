@@ -89,10 +89,12 @@ def dino_app():
     ddlogger.info("Loading app config file...")
     with open('config.json') as json_config_file:
         config = json.load(json_config_file)
+        logger.debug(config)
 
     ddlogger.info("Loading greengrass config file...")
     with open('/greengrass/config/config.json') as json_gg_config_file:
         gg_config = json.load(json_gg_config_file)
+        logger.debug(gg_config)
 
     # Initialize the JetBot Robot.
     ddlogger.info("Starting cuda...")
