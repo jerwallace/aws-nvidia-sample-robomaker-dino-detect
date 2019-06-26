@@ -99,7 +99,7 @@ def dino_app():
     # Initialize the JetBot Robot.
     ddlogger.info("Starting cuda...")
     device = torch.device('cuda')
-    ddlogger.info("Initializing robot on I2C Bus %i...", config.i2c_bus)
+    ddlogger.info("Initializing robot on I2C Bus %i...", config['i2c_bus'])
     robot = Robot(i2c_bus=config.i2c_bus)
     camera = Camera.instance(width=config.image_size[0], height=config.image_size[1])
     mean = config.np_value * np.array(config.mean_values)
