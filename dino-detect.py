@@ -72,9 +72,8 @@ def move_bot(image, robot_stop):
         robot.left_motor.value = max(min(config.speed_gain_slider + steering_slider, 1.0), 0.0)
         robot.right_motor.value = max(min(config.speed_gain_slider - steering_slider, 1.0), 0.0)
 
-def main():
-    
-    global config, settings, device, DEBUG
+def dino_app()    
+    global config, settings, device
 
     # Pull in the app arguments. Today, this is just the logging level. 
     # TODO: Add other configuration settings. 
@@ -165,3 +164,5 @@ def main():
             iotClient.publish(config.topic, json.dumps(message), 1)
         move_bot(img, robot_stop)
 
+if __name__ == main():
+    dino_app()
