@@ -23,9 +23,9 @@ parser.add_argument("-D", "--debug_mode", action="store", dest="debug", default=
 device = None
 config = None
 settings = {
-    normalize: None,
-    mean_roadfollow: None,
-    std_roadfollow: None
+    "normalize": None,
+    "mean_roadfollow": None,
+    "std_roadfollow": None
 }
 angle = 0.0
 angle_last = 0.0
@@ -152,16 +152,16 @@ def main():
             if classes == 5:
                 logging.info("Found unknown dinosaur...")
                 message = {
-                    dinosaur: "unknown",
-                    confidence: str(probs),
-                    image: base64.b64encode(img)
+                    "dinosaur": "unknown",
+                    "confidence": str(probs),
+                    "image": base64.b64encode(img)
                 }
             else:
                 logging.info("Found %s...", config.dino_names[classes])
                 message = {
-                    dinosaur: config.dino_names[classes],
-                    confidence: str(probs),
-                    image: base64.b64encode(img)
+                    "dinosaur": config.dino_names[classes],
+                    "confidence": str(probs),
+                    "image": base64.b64encode(img)
                 }
             iotClient.publish(config.topic, json.dumps(message), 1)
         move_bot(img, robot_stop)
