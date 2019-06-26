@@ -80,13 +80,12 @@ def main():
     # Pull in the app arguments. Today, this is just the logging level. 
     # TODO: Add other configuration settings. 
 
-    if (args.debug) {
+    if (args.debug):
         logging.basicConfig(level=logging.DEBUG)
         logging.info("Set logger to DEBUG mode.")
-    } else {
+    else:
         logging.basicConfig(level=logging.ERROR)
         logging.info("Set logger to ERROR mode.")
-    }
 
     # Load in the log config files from a local config as well as the default greengrass config.
     logging.info("Loading app config file...")
