@@ -79,22 +79,22 @@ def dino_app():
     # TODO: Add other configuration settings. 
     if (DEBUG):
         logging.basicConfig(format=FORMAT, level=logging.DEBUG)
-        ddlogger = logging.getLogger('dino-detect')
-        ddlogger.info("Set logger to DEBUG mode.")
     else:
-        logging.basicConfig(level=logging.ERROR)
-        logger.info("Set logger to ERROR mode.")
+        logging.basicConfig(format=FORMAT, level=logging.ERROR)
+    
+    ddlogger = logging.getLogger('dino-detect')
+    ddlogger.info("Set logger to ERROR mode.")
 
     # Load in the log config files from a local config as well as the default greengrass config.
     ddlogger.info("Loading app config file...")
     with open('config.json') as json_config_file:
         config = json.load(json_config_file)
-        logger.debug(config)
+        ddlogger.debug(config)
 
     ddlogger.info("Loading greengrass config file...")
     with open('/greengrass/config/config.json') as json_gg_config_file:
         gg_config = json.load(json_gg_config_file)
-        logger.debug(gg_config)
+        ddlogger.debug(gg_config)
 
     # Initialize the JetBot Robot.
     ddlogger.info("Starting cuda...")
