@@ -72,7 +72,7 @@ def move_bot(image, robot_stop):
         robot.left_motor.value = max(min(config.speed_gain_slider + steering_slider, 1.0), 0.0)
         robot.right_motor.value = max(min(config.speed_gain_slider - steering_slider, 1.0), 0.0)
 
-def dino_app()    
+def dino_app():    
     global config, settings, device
 
     # Pull in the app arguments. Today, this is just the logging level. 
