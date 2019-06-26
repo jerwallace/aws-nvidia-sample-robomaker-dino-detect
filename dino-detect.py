@@ -16,6 +16,7 @@ from jetbot import Camera, Robot
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
 
 DEBUG = True
+FORMAT = '%(asctime)-15s %(message)s'
 device = None
 config = None
 settings = {
@@ -78,8 +79,8 @@ def main():
     # Pull in the app arguments. Today, this is just the logging level. 
     # TODO: Add other configuration settings. 
     if (DEBUG):
-        logging.basicConfig(level=logging.DEBUG)
-        logger = logging.getLogger('dinodetect')
+        logging.basicConfig(format=FORMAT, level=logging.DEBUG)
+        logger = logging.getLogger('dino-detect')
         ddlogger.info("Set logger to DEBUG mode.")
     else:
         logging.basicConfig(level=logging.ERROR)
