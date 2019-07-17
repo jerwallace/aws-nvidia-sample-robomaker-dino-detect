@@ -105,7 +105,7 @@ int main(int argc, char **argv)
 	/*
 	 * open camera device
 	 */
-	camera = gstCamera::Create(camera_index);
+	camera = gstCamera::Create(((char*)camera_index));
 
 	if( !camera )
 	{
