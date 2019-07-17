@@ -45,7 +45,7 @@ bool aquireFrame()
 {
 	void* imgCPU  = NULL;
 	void* imgCUDA = NULL;
-	void* imgRGBA = NULL;
+	float* imgRGBA = NULL;
 
 	// get the latest frame
 	if( !camera->Capture(&imgCPU, &imgCUDA, 1000) )
@@ -55,7 +55,7 @@ bool aquireFrame()
 	}
 
 	// convert from YUV to RGBA
-	if( !camera->ConvertRGBA(imgCUDA, &((float*)imgRGBA)) )
+	if( !camera->ConvertRGBA(imgCUDA, &imgRGBA) )
 	{
 		ROS_ERROR("failed to convert from NV12 to RGBA");
 		return false;
