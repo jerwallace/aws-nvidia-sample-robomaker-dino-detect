@@ -55,7 +55,7 @@ bool aquireFrame()
 	}
 
 	// convert from YUV to RGBA
-	if( !camera->ConvertRGBA(imgCUDA, &imgRGBA) )
+	if( !camera->ConvertRGBA(imgCUDA, &((float*)imgRGBA)) )
 	{
 		ROS_ERROR("failed to convert from NV12 to RGBA");
 		return false;
