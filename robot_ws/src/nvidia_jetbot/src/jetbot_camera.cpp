@@ -45,7 +45,7 @@ bool aquireFrame()
 {
 	void* imgCPU  = NULL;
 	void* imgCUDA = NULL;
-	float* imgRGBA = NULL;
+	void* imgRGBA = NULL;
 
 	// get the latest frame
 	if( !camera->Capture(&imgCPU, &imgCUDA, 1000) )
@@ -95,7 +95,7 @@ int main(int argc, char **argv)
 	/*
 	 * retrieve parameters
 	 */
-	const char camera_index = -1;
+	int camera_index = -1;
 
 	private_nh.param<int>("camera_index", camera_index, -1);
 	
