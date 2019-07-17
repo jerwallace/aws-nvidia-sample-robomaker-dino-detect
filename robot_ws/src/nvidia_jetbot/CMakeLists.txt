@@ -12,8 +12,6 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   sensor_msgs
-  geometry_msgs
-  nav_msgs
 )
 find_package(jetson-utils REQUIRED)
 find_package(CUDA REQUIRED)
@@ -41,8 +39,6 @@ catkin_package(
     rospy
     std_msgs
     sensor_msgs
-    geometry_msgs
-    nav_msgs
     message_runtime
 )
 
@@ -50,7 +46,7 @@ catkin_package(
 # Build
 ################################################################################
 include_directories(
-  include
+# include
   ${catkin_INCLUDE_DIRS}
   ${CUDA_INCLUDE_DIRS}
 )
@@ -64,7 +60,9 @@ target_link_libraries(jetbot_camera ${catkin_LIBRARIES} jetson-utils)
 # Install
 ################################################################################
 catkin_install_python(PROGRAMS 
-  nodes/rotate
+  nodes/dino_detect
+  nodes/display
+  nodes/move
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
