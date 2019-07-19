@@ -15,7 +15,7 @@ setup:
 build: build_robot build_simulation
 
 build_robot:
-	scripts/build.sh ./robot_ws
+	aws ssm send-command --document-name "AWS-RunShellScript" --document-version "1" --targets "Key=instanceids,Values=i-02ce0a5de7e8db1a7" --parameters '{"workingDirectory":["/home/ubuntu/"],"executionTimeout":["3600"],"commands":["./build.sh -b rootfs-nano/"]}' --timeout-seconds 600 --max-concurrency "50" --max-errors "0" --output-s3-bucket-name "dinobot-robomaker-assets" --output-s3-key-prefix "build-logs" --region us-west-2
 
 build_simulation:
 	scripts/build.sh ./simulation_ws

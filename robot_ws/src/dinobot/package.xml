@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>nvidia_jetbot</name>
+  <name>dinobot</name>
   <version>0.0.0</version>
   <description>
     NVidia Jetson Nano-based JetBot ROS Application

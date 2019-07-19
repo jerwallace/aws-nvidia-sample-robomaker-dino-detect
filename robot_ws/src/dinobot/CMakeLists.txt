@@ -2,7 +2,7 @@
 # Set minimum required version of cmake, project name and compile options
 ################################################################################
 cmake_minimum_required(VERSION 2.8.3)
-project(nvidia_jetbot)
+project(dinobot)
 add_compile_options(-Wall -Wextra -Wpedantic -fpermissive)
 
 ################################################################################
@@ -73,6 +73,14 @@ install(DIRECTORY launch
 )
 
 install(DIRECTORY deploymentScripts
+  DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}
+)
+
+install(FILES deploymentScripts/pre_launch_script.sh
+  DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}
+)
+
+install(FILES deploymentScripts/post_launch_script.sh
   DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}
 )
 
