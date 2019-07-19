@@ -3,7 +3,7 @@
 ################################################################################
 cmake_minimum_required(VERSION 2.8.3)
 project(nvidia_jetbot)
-add_compile_options(-Wall -Wextra -Wpedantic)
+add_compile_options(-Wall -Wextra -Wpedantic -fpermissive)
 
 ################################################################################
 # Find catkin packages and libraries for catkin and system dependencies
@@ -20,7 +20,7 @@ find_package(Qt4 REQUIRED)
 include(${QT_USE_FILE})
 add_definitions(${QT_DEFINITIONS})
 
-################################################################################
+############################# ###################################################
 # Setup for python modules and scripts
 ################################################################################
 catkin_python_setup()
