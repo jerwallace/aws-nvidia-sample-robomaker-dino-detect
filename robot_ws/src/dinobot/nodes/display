@@ -90,12 +90,11 @@ if __name__ == '__main__':
 		if not user_text is None:
 			draw.text((x, top), user_text,  font=font, fill=255)
 		else:
-			draw.text((x, top), "eth0: " + str(get_ip_address('eth0')), font=font, fill=255)
-		
-		draw.text((x+32, top+16),  "wlan0: " + str(get_ip_address('wlan0')), font=font, fill=255)
-		draw.text((x+32, top+24), str(MemUsage.decode('utf-8')),  font=font, fill=255)
-		draw.text((x+32, top+34), str(Disk.decode('utf-8')),  font=font, fill=255)
-
+			draw.text((x+32, top+16),    "eth0: ",  font=font, fill=255)
+	    	draw.text((x+31, top+26),    str(get_ip_address('eth0')),  font=font, fill=255)
+	    	draw.text((x+32, top+44),    "wlan0: ",  font=font, fill=255)
+	    	draw.text((x+31, top+54),    str(get_ip_address('wlan0')), font=font, fill=255)
+	    
 		# Display image.
 		disp.image(image)
 		disp.display()
