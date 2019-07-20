@@ -76,14 +76,6 @@ install(DIRECTORY deploymentScripts
   DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}
 )
 
-install(FILES deploymentScripts/pre_launch_script.sh
-  DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}
-)
-
-install(FILES deploymentScripts/post_launch_script.sh
-  DESTINATION ${CATKIN_GLOBAL_SHARE_DESTINATION}
-)
-
 ################################################################################
 # Test
 ################################################################################
