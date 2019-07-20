@@ -1,3 +1,3 @@
 <launch>
-  <node name="display" pkg="dinobot" type="dinobot" />
+  <node name="display" pkg="dinobot" type="display" />
 </launch>
