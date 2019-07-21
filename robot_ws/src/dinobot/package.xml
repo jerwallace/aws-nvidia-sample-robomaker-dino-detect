@@ -13,6 +13,4 @@
   <depend>rospy</depend>
   <depend>std_msgs</depend>
   <depend>sensor_msgs</depend>
-  <depend>Adafruit_SSD1306</depend>
-  <depend>AWSIoTPythonSDK</depend>
 </package>
