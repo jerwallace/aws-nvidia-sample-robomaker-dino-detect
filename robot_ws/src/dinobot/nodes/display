@@ -66,8 +66,9 @@ if __name__ == '__main__':
 	x = 0
 
 	# Load default font.
-	font = ImageFont.load_default()
-
+	font1 = ImageFont.truetype("FreeSans.ttf", 9)
+	font2 = ImageFont.truetype("FreeSans.ttf", 11)
+    
 	# setup ros node
 	rospy.init_node('display')
 	rospy.Subscriber('~user_text', String, on_user_text)
@@ -81,19 +82,26 @@ if __name__ == '__main__':
 		# Shell scripts for system monitoring from here : https://unix.stackexchange.com/questions/119126/command-to-display-memory-usage-disk-usage-and-cpu-load
 		#cmd = "top -bn1 | grep load | awk '{printf \"CPU Load: %.2f\", $(NF-2)}'"
 		#CPU = subprocess.check_output(cmd, shell = True )
-		cmd = "free -m | awk 'NR==2{printf \"Mem: %s/%sMB %.2f%%\", $3,$2,$3*100/$2 }'"
+		cmd = "top -bn1 | grep load | awk '{printf \"CPU Load:  %.2f\", $(NF-2)}'"
+		CPU = subprocess.check_output(cmd, shell = True )
+		cmd = "free -m | awk 'NR==2{printf \"%.2f%%\", $3*100/$2}'"
+		Mem_percent = subprocess.check_output(cmd, shell = True )
+		cmd = "free -m | awk 'NR==2{printf \"%s/%sMB\", $3,$2}'"
 		MemUsage = subprocess.check_output(cmd, shell = True )
-		cmd = "df -h | awk '$NF==\"/\"{printf \"Disk: %d/%dGB %s\", $3,$2,$5}'"
-		Disk = subprocess.check_output(cmd, shell = True )
-
+		cmd = "df -h | awk '$NF==\"/\"{printf \"%s\", $5}'"
+		Disk_percent = subprocess.check_output(cmd, shell = True )
+		cmd = "df -h | awk '$NF==\"/\"{printf \"%d/%d GB\", $3,$2}'"
+		DiskUsage = subprocess.check_output(cmd, shell = True )
+	    
 		# Write two lines of text.
 		if not user_text is None:
-			draw.text((x, top), user_text,  font=font, fill=255)
+			draw.text((x+32, top+16), user_text,  font=font2, fill=255)
 		else:
-			draw.text((x+32, top+16),    "eth0: ",  font=font, fill=255)
-	    	draw.text((x+31, top+26),    str(get_ip_address('eth0')),  font=font, fill=255)
-	    	draw.text((x+32, top+44),    "wlan0: ",  font=font, fill=255)
-	    	draw.text((x+31, top+54),    str(get_ip_address('wlan0')), font=font, fill=255)
+			draw.text((x+32, top+16),    str(CPU.decode('utf-8')),  font=font1, fill=255)
+			draw.text((x+32, top+24),    "Mem:  " + str(Mem_percent.decode('utf-8')),  font=font1, fill=255)
+			draw.text((x+32, top+34),    "Disk:  " + str(Disk_percent.decode('utf-8')),  font=font1, fill=255)
+			draw.text((x+32, top+44),    "wlan0: ",  font=font1, fill=255)
+			draw.text((x+31, top+54),    str(get_ip_address('wlan0')), font=font1, fill=255)
 	    
 		# Display image.
 		disp.image(image)
