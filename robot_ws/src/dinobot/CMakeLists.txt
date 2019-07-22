@@ -17,6 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(jetson-utils REQUIRED)
 find_package(CUDA REQUIRED)
 find_package(Qt4 REQUIRED)
+find_package(OpenCV 2 REQUIRED)
 include(${QT_USE_FILE})
 add_definitions(${QT_DEFINITIONS})
 
