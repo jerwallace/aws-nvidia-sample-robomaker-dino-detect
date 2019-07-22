@@ -35,8 +35,8 @@ config = {
         "Brachiosaurus",
         "Unknown"],
     "topic": "dino-detect",
-    "road_following_model": "best_steering_model_xy.pth",
-    "dino_detect_model": "best_dinodet_model_xy.pth",
+    "road_following_model": "/tmp/trained_models/best_steering_model_xy.pth",
+    "dino_detect_model": "/tmp/trained_models/best_dinodet_model_xy.pth",
     "image_size": [224,224]
 }
 settings = {
