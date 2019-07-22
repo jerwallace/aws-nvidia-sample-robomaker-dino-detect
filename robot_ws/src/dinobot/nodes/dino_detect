@@ -14,7 +14,7 @@ import random
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
 import rospy
 from std_msgs.msg import String
-
+IOT_HOST = "a8hgrxh4eewrt-ats.iot.us-east-1.amazonaws.com"
 DEBUG = True
 device = None
 config = {
@@ -128,13 +128,6 @@ def dino_detect():
     else:
         rospy.init_node('dino_detect', log_level=rospy.ERROR)
 
-    # Pull in the app arguments. Today, this is just the logging level. 
-    # TODO: Add other configuration settings. 
-    rospy.loginfo("Loading greengrass config file...")
-    with open('/greengrass/config/config.json') as json_gg_config_file:
-        gg_config = json.load(json_gg_config_file)
-        rospy.loginfo(gg_config)
-
     # Initialize the JetBot Robot.
     rospy.loginfo("Starting cuda...")
     device = torch.device('cuda')
@@ -167,8 +160,8 @@ def dino_detect():
     rospy.loginfo("Initializing AWS IoT...")
     iotClient = None
     iotClient = AWSIoTMQTTClient('jetbot'+str(random.randint(1,101)))
-    iotClient.configureEndpoint(gg_config['coreThing']['iotHost'], 8843)
-    iotClient.configureCredentials(gg_config['coreThing']['caPath'], gg_config['coreThing']['keyPath'], gg_config['coreThing']['certPath'])
+    iotClient.configureEndpoint(IOT_HOST, 8843)
+    iotClient.configureCredentials("../share/certs/root.pem.ca", "../share/certs/private.pem.key", "../share/certs/certificate.pem.crt")
     iotClient.connect()
     rospy.loginfo("Starting application loop...")
     rospy.Subscriber("jetbot_camera/raw", Image, callback)
