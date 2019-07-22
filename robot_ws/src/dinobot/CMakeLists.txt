@@ -17,7 +17,6 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(jetson-utils REQUIRED)
 find_package(CUDA REQUIRED)
 find_package(Qt4 REQUIRED)
-find_package(OpenCV 2 REQUIRED)
 include(${QT_USE_FILE})
 add_definitions(${QT_DEFINITIONS})
 
@@ -68,6 +67,8 @@ catkin_install_python(PROGRAMS
   nodes/move
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
+
+install(PROGRAMS jetbot_camera DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY launch
 	DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
