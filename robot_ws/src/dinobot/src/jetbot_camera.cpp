@@ -45,7 +45,7 @@ bool aquireFrame()
 {
 	void* imgCPU  = NULL;
 	void* imgCUDA = NULL;
-	float* imgRGBA = NULL;
+	void* imgRGBA = NULL;
 
 	// get the latest frame
 	if( !camera->Capture(&imgCPU, &imgCUDA, 1000) )
@@ -105,7 +105,7 @@ int main(int argc, char **argv)
 	/*
 	 * open camera device
 	 */
-	camera = gstCamera::Create(((char*)camera_index));
+	camera = gstCamera::Create(camera_index);
 
 	if( !camera )
 	{
