@@ -8,7 +8,7 @@ from catkin_pkg.python_setup import generate_distutils_setup
 setup_args = generate_distutils_setup(
     packages=['dinobot'],
     package_dir={'': 'src'},
-    install_requires=['Adafruit_SSD1306', 'Qwiic_SCMD_Py']
+    install_requires=['Adafruit_SSD1306', 'Qwiic_SCMD_Py', 'Qwiic_I2C_Py', 'Adafruit_Python_GPIO']
 )
 
 setup(**setup_args)
