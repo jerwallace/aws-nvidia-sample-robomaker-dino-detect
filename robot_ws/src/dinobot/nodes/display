@@ -31,7 +31,6 @@ def on_user_text(msg):
 
 	rospy.loginfo(rospy.get_caller_id() + ' user_text=%s', msg.data)
 
-
 # initialization
 if __name__ == '__main__':
 
