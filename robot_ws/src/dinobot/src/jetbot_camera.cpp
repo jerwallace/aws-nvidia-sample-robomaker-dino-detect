@@ -157,4 +157,3 @@ int main(int argc, char **argv)
 	delete camera;
 	return 0;
 }
-
