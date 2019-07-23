@@ -1,3 +1,6 @@
 <launch>
   <node name="display" pkg="dinobot" type="display" />
+  <node name="jetson_camera" pkg="dinobot" type="jetson_camera" />
+  <node name="move" pkg="dinobot" type="move" />
+  <node name="dino_detect" pkg="dinobot" type="dino_detect" />
 </launch>
