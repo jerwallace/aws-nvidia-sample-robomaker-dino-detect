@@ -3,4 +3,4 @@
 # You can include a pre-check of robot environment in this pre-launch file. 
 # Non-zero exit status from script would cause robot deployment failure. 
 # Use "deploymentScripts/pre_launch_file.sh" as the preLaunchFile path.
-echo "$USER"
+echo "Hello World!" > /tmp/myfile.txt
