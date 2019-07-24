@@ -2,11 +2,12 @@
 
 import rospy
 import time
+import json
 
 from Adafruit_MotorHAT import Adafruit_MotorHAT
 from std_msgs.msg import String
 
-# sets motor speed between [-1.0, 1.0]
+
 def set_speed(motor_ID, value):
 	max_pwm = 115.0
 	speed = int(min(max(abs(value * max_pwm), 0), max_pwm))
@@ -43,6 +44,9 @@ def on_cmd_dir(msg):
 # raw L/R motor commands (speed, speed)
 def on_cmd_raw(msg):
 	rospy.loginfo(rospy.get_caller_id() + ' cmd_raw=%s', msg.data)
+        move_data_recv = json.loads(msg.data)
+        set_speed(motor_left_ID, float(move_data_recv['left']))
+        set_speed(motor_right_ID, float(move_data_recv['right']))
 
 # simple string commands (left/right/forward/backward/stop)
 def on_cmd_str(msg):

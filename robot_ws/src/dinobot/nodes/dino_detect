@@ -7,7 +7,6 @@ import datetime
 import numpy as np
 import cv2
 import torchvision.transforms as transforms
-import PIL.Image
 import base64
 import json
 import random
@@ -16,6 +15,8 @@ import rospy
 from std_msgs.msg import String
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
+import PIL.Image
+
 IOT_HOST = "a8hgrxh4eewrt-ats.iot.us-east-1.amazonaws.com"
 DEBUG = True
 device = None
@@ -63,7 +64,7 @@ bridge = CvBridge()
 def preprocess(camera_value):
     global device, settings, normalize
     x = camera_value
-    print(x)
+    #print(x)
     x = cv2.cvtColor(x, cv2.COLOR_BGR2RGB)
     x = x.transpose((2, 0, 1))
     x = torch.from_numpy(x).float()
@@ -89,11 +90,14 @@ def find_dino(change):
     return (e.data.numpy().squeeze().tolist() for e in topk)
 
 def move_bot(image, robot_stop):
-    global angle, angle_last, model_roadfollow
-    pub = rospy.Publisher('cmd_raw', String)
+    global config, angle, angle_last, model_roadfollow
+    pub = rospy.Publisher('move/cmd_raw', String)
+    move_data = {}
+    move_data['left'] = 0
+    move_data['right'] = 0
 
     if robot_stop:
-        pub.publish("[0,0]")
+        pub.publish(json.dumps(move_data))
         time.sleep(2)
         robot_stop = False
     else:
@@ -104,15 +108,15 @@ def move_bot(image, robot_stop):
         pid = angle * config['steering_gain_slider'] + (angle - angle_last) * config['steering_dgain_slider']
         angle_last = angle
         steering_slider = pid + config['steering_bias_slider']
-        left = max(min(config['speed_gain_slider'] + steering_slider, 1.0), 0.0)
-        right = max(min(config['speed_gain_slider'] - steering_slider, 1.0), 0.0)
-        pub.publish("["+left+","+right+"]")
+        move_data['left'] = max(min(config['speed_gain_slider'] + steering_slider, 1.0), 0.0)
+        move_data['right'] = max(min(config['speed_gain_slider'] - steering_slider, 1.0), 0.0)
+        pub.publish(json.dumps(move_data))
 
 def callback(data):
     global config, settings, device, iotClient
-    print ("pre image")
+    #print ("pre image")
     img = bridge.imgmsg_to_cv2(data, 'bgr8')
-    print ("post image")
+    #print ("post image")
     #img = data
     robot_stop = False
     probs, classes = find_dino({'new': img}) 
@@ -125,14 +129,14 @@ def callback(data):
             message = {
                 "dinosaur": "unknown",
                 "confidence": str(probs),
-                "image": base64.b64encode(img)
+                "image": base64.b64encode(PIL.Image.fromarray(img))
             }
         else:
             rospy.loginfo("Found %s...", config['dino_names'][classes])
             message = {
                 "dinosaur": config['dino_names'][classes],
                 "confidence": str(probs),
-                "image": base64.b64encode(img)
+                "image": base64.b64encode(Image.fromarray(img))
             }
         iotClient.publish(config['topic'], json.dumps(message), 1)
     move_bot(img, robot_stop)
