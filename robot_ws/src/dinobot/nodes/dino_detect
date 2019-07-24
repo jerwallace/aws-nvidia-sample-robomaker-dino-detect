@@ -13,7 +13,7 @@ import json
 import random
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
 import rospy
-from std_msgs.msg import String
+from std_msgs.msg import String, Image
 IOT_HOST = "a8hgrxh4eewrt-ats.iot.us-east-1.amazonaws.com"
 DEBUG = True
 device = None
@@ -40,21 +40,29 @@ config = {
     "image_size": [224,224]
 }
 settings = {
-    "normalize": None,
     "mean_roadfollow": None,
     "std_roadfollow": None
 }
+
+mean = config['np_value'] * np.array(config['mean_values'])
+stdev = config['np_value'] * np.array(config['std_values'])
+normalize = torchvision.transforms.Normalize(mean, stdev)
+mean_roadfollow = torch.Tensor([0.485, 0.456, 0.406]).cuda().half()
+std_roadfollow = torch.Tensor([0.229, 0.224, 0.225]).cuda().half()
+model_dinodet = None
+model_roadfollow = None
+
 angle = 0.0
 angle_last = 0.0
 iotClient = None
 
 def preprocess(camera_value):
-    global device, settings
+    global device, settings, normalize
     x = camera_value
     x = cv2.cvtColor(x, cv2.COLOR_BGR2RGB)
     x = x.transpose((2, 0, 1))
     x = torch.from_numpy(x).float()
-    x = settings['normalize'](x)
+    x = normalize(x)
     x = x.to(device)
     x = x[None, ...]
     return x
@@ -63,10 +71,11 @@ def preprocess_roadfollow(image):
     global device, settings
     image = PIL.Image.fromarray(image)
     image = transforms.functional.to_tensor(image).to(device).half()
-    image.sub_(settings['mean_roadfollow'][:, None, None]).div_(settings['std_roadfollow'][:, None, None])
+    image.sub_(mean_roadfollow[:, None, None]).div_(std_roadfollow[:, None, None])
     return image[None, ...]
 
 def find_dino(change):
+    global model_dinodet
     x = change['new'] 
     x = preprocess(x)
     y = model_dinodet(x)
@@ -75,7 +84,7 @@ def find_dino(change):
     return (e.data.numpy().squeeze().tolist() for e in topk)
 
 def move_bot(image, robot_stop):
-    global angle, angle_last
+    global angle, angle_last, model_roadfollow
     pub = rospy.Publisher('cmd_raw', String)
 
     if robot_stop:
@@ -96,10 +105,10 @@ def move_bot(image, robot_stop):
 
 def callback(data):
     global config, settings, device, iotClient
-    settings['normalize'] = torchvision.transforms.Normalize(mean, stdev)
     img = data
     robot_stop = False
     probs, classes = find_dino({'new': img}) 
+    prev_class = None
     if probs > 0.6 and prev_class != classes:
         prev_class = classes
         robot_stop = True
@@ -121,7 +130,7 @@ def callback(data):
     move_bot(img, robot_stop)
 
 def dino_detect():    
-    global config, settings, device, iotClient
+    global config, settings, device, iotClient, model_dinodet, model_roadfollow
 
     if (DEBUG):
         rospy.init_node('dino_detect', log_level=rospy.DEBUG)
@@ -132,10 +141,6 @@ def dino_detect():
     rospy.loginfo("Starting cuda...")
     device = torch.device('cuda')
     rospy.loginfo("Initializing robot on I2C Bus %i...", config['i2c_bus'])
-    mean = config['np_value'] * np.array(config['mean_values'])
-    stdev = config['np_value'] * np.array(config['std_values'])
-    settings['mean_roadfollow'] = torch.Tensor(config['mean_values']).cuda().half()
-    settings['std_roadfollow'] = torch.Tensor(config['std_values']).cuda().half()
 
     rospy.loginfo("Initializing ML models...")
     rospy.loginfo("Road following model...")
@@ -161,7 +166,7 @@ def dino_detect():
     iotClient = None
     iotClient = AWSIoTMQTTClient('jetbot'+str(random.randint(1,101)))
     iotClient.configureEndpoint(IOT_HOST, 8843)
-    iotClient.configureCredentials("../share/certs/root.pem.ca", "../share/certs/private.pem.key", "../share/certs/certificate.pem.crt")
+    iotClient.configureCredentials("../share/dinobot/certs/root.pem.ca", "../share/dinobot/certs/private.pem.key", "../share/dinobot/certs/certificate.pem.crt")
     iotClient.connect()
     rospy.loginfo("Starting application loop...")
     rospy.Subscriber("jetbot_camera/raw", Image, callback)
