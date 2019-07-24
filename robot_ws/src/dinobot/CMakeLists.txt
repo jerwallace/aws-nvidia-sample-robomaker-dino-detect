@@ -3,13 +3,11 @@
 ################################################################################
 cmake_minimum_required(VERSION 2.8.3)
 project(dinobot)
-add_compile_options(-Wall -Wextra -Wpedantic -fpermissive)
 
 ################################################################################
 # Find catkin packages and libraries for catkin and system dependencies
 ################################################################################
 find_package(catkin REQUIRED COMPONENTS
-  roscpp
   rospy
   std_msgs
   sensor_msgs
@@ -38,7 +36,6 @@ catkin_python_setup()
 ################################################################################
 catkin_package(
   CATKIN_DEPENDS
-    roscpp
     rospy
     std_msgs
     sensor_msgs
@@ -55,9 +52,6 @@ include_directories(
 
 include_directories(/usr/include/gstreamer-1.0 /usr/include/glib-2.0 /usr/include/libxml2 /usr/lib/aarch64-linux-gnu/gstreamer-1.0/include /usr/lib/x86_64-linux-gnu/gstreamer-1.0/include/ /usr/lib/aarch64-linux-gnu/glib-2.0/include/ /usr/lib/x86_64-linux-gnu/glib-2.0/include/)
 
-add_executable(jetbot_camera src/jetbot_camera.cpp src/image_converter.cpp)
-target_link_libraries(jetbot_camera ${catkin_LIBRARIES} jetson-utils)
-
 ################################################################################
 # Install
 ################################################################################
@@ -65,11 +59,9 @@ catkin_install_python(PROGRAMS
   nodes/dino_detect
   nodes/display
   nodes/move
+  nodes/camera
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
-
-install(TARGETS jetbot_camera
-        RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 install(DIRECTORY launch
 	DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}

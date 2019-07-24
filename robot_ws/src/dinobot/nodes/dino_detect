@@ -13,7 +13,9 @@ import json
 import random
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
 import rospy
-from std_msgs.msg import String, Image
+from std_msgs.msg import String
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge, CvBridgeError
 IOT_HOST = "a8hgrxh4eewrt-ats.iot.us-east-1.amazonaws.com"
 DEBUG = True
 device = None
@@ -56,9 +58,12 @@ angle = 0.0
 angle_last = 0.0
 iotClient = None
 
+bridge = CvBridge()
+
 def preprocess(camera_value):
     global device, settings, normalize
     x = camera_value
+    print(x)
     x = cv2.cvtColor(x, cv2.COLOR_BGR2RGB)
     x = x.transpose((2, 0, 1))
     x = torch.from_numpy(x).float()
@@ -105,7 +110,10 @@ def move_bot(image, robot_stop):
 
 def callback(data):
     global config, settings, device, iotClient
-    img = data
+    print ("pre image")
+    img = bridge.imgmsg_to_cv2(data, 'bgr8')
+    print ("post image")
+    #img = data
     robot_stop = False
     probs, classes = find_dino({'new': img}) 
     prev_class = None
@@ -166,11 +174,12 @@ def dino_detect():
     iotClient = None
     iotClient = AWSIoTMQTTClient('jetbot'+str(random.randint(1,101)))
     iotClient.configureEndpoint(IOT_HOST, 8843)
-    iotClient.configureCredentials("../share/dinobot/certs/root.pem.ca", "../share/dinobot/certs/private.pem.key", "../share/dinobot/certs/certificate.pem.crt")
-    iotClient.connect()
+    iotClient.configureCredentials("../../share/dinobot/certs/root.ca.pem", "../../share/dinobot/certs/private.pem.key", "../../share/dinobot/certs/certificate.pem.crt")
     rospy.loginfo("Starting application loop...")
     rospy.Subscriber("jetbot_camera/raw", Image, callback)
+    iotClient.connect()
 
 if __name__ == '__main__':
     dino_detect()
+    rospy.spin()
 
