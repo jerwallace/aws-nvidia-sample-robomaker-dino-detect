@@ -70,7 +70,7 @@ def on_cmd_str(msg):
 if __name__ == '__main__':
 
 	# setup motor controller
-	motor_driver = Adafruit_MotorHAT(i2c_bus=1)
+	motor_driver = Adafruit_MotorHAT(i2c_bus=0)
 
 	motor_left_ID = 1
 	motor_right_ID = 2
