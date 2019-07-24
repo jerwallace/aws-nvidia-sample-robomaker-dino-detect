@@ -82,7 +82,7 @@ if __name__ == '__main__':
 	all_stop()
 
 	# setup ros node
-	rospy.init_node('jetbot_motors')
+	rospy.init_node('move')
 	
 	rospy.Subscriber('~cmd_dir', String, on_cmd_dir)
 	rospy.Subscriber('~cmd_raw', String, on_cmd_raw)

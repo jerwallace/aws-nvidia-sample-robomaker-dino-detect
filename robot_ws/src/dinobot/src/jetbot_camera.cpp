@@ -62,7 +62,7 @@ bool aquireFrame()
 	}
 
 	// assure correct image size
-	if( !camera_cvt->Resize(camera->GetWidth(), camera->GetHeight()) )
+	if( !camera_cvt->Resize(640, 480) )
 	{
 		ROS_ERROR("failed to resize camera image converter");
 		return false;
