@@ -176,7 +176,7 @@ def dino_detect():
     # Initialize the AWS IoT Connection based on AWS Greengrass config.
     rospy.loginfo("Initializing AWS IoT...")
     #iotClient = None
-    #iotClient = AWSIoTMQTTClient('jetbot'+str(random.randint(1,101)))
+    #iotClient = AWSIoTMQTTClient('jetbot'+str(random.randint(1,101))
     #iotClient.configureEndpoint(IOT_HOST, 8843)
     #iotClient.configureCredentials("../../share/dinobot/certs/root.ca.pem", "../../share/dinobot/certs/private.pem.key", "../../share/dinobot/certs/certificate.pem.crt")
     rospy.loginfo("Starting application loop...")
