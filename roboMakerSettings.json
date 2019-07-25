@@ -1,5 +1,6 @@
 {
-  "runConfigurations": [{
+  "runConfigurations": [
+    {
       "id": "DinoBot_Cfg01",
       "name": "DinoBot Robot",
       "type": "colcon build",
@@ -7,7 +8,8 @@
         "workingDir": "./aws-nvidia-sample-robomaker-dino-detect/robot_ws",
         "cmdArgs": ""
       }
-    }, {
+    },
+    {
       "id": "DinoBot_Cfg02",
       "name": "DinoBot Robot",
       "type": "colcon bundle",
@@ -15,7 +17,8 @@
         "workingDir": "./aws-nvidia-sample-robomaker-dino-detect/robot_ws",
         "cmdArgs": ""
       }
-    }, {
+    },
+    {
       "id": "DinoBot_Cfg03",
       "name": "DinoBot Simulation",
       "type": "colcon build",
@@ -23,7 +26,8 @@
         "workingDir": "./aws-nvidia-sample-robomaker-dino-detect/simulation_ws",
         "cmdArgs": ""
       }
-    }, {
+    },
+    {
       "id": "DinoBot_Cfg04",
       "name": "DinoBot Simulation",
       "type": "colcon bundle",
@@ -31,7 +35,8 @@
         "workingDir": "./aws-nvidia-sample-robomaker-dino-detect/simulation_ws",
         "cmdArgs": ""
       }
-    }, {
+    },
+    {
       "id": "DinoBot_SimulationJob1",
       "name": "DinoBot",
       "type": "simulation",
@@ -84,7 +89,12 @@
       "id": "DinoBot_wf1",
       "type": "workflow",
       "name": "DinoBot - Build and Bundle All",
-      "runCfgIds": ["DinoBot_Cfg01", "DinoBot_Cfg02", "DinoBot_Cfg03", "DinoBot_Cfg04"]
+      "runCfgIds": [
+        "DinoBot_Cfg01",
+        "DinoBot_Cfg02",
+        "DinoBot_Cfg03",
+        "DinoBot_Cfg04"
+      ]
     }
   ]
 }
