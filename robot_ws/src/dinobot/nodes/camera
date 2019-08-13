@@ -20,7 +20,7 @@ class GetImage:
     def __init__(self):
         self.pub_img = rospy.Publisher('jetbot_camera/raw', Image, queue_size=1)
 
-    def gstreamer_pipeline (self, capture_width=1280, capture_height=720, display_width=1280, display_height=720, framerate=60, flip_method=0) :   
+    def gstreamer_pipeline (self, capture_width=1280, capture_height=720, display_width=1280, display_height=720, framerate=60, flip_method=0) :
         return ('nvarguscamerasrc ! ' 
         'video/x-raw(memory:NVMM), '
         'width=(int)%d, height=(int)%d, '
@@ -35,12 +35,13 @@ class GetImage:
         print self.gstreamer_pipeline(flip_method=0)
         cap = cv2.VideoCapture(self.gstreamer_pipeline(flip_method=0), cv2.CAP_GSTREAMER)
         if cap.isOpened():
+            rate = rospy.rate(30)  # attempt to get fixed rate
             while not rospy.is_shutdown():
                 ret_val, img = cap.read();
                 resize_image = cv2.resize( img, (224,224))
                 msg_frame = CvBridge().cv2_to_imgmsg(resize_image, 'bgr8')
                 self.pub_img.publish(msg_frame)
-                rospy.sleep(0.001)
+                rate.sleep()
             cap.release()
             cv2.destroyAllWindows()
         else:
