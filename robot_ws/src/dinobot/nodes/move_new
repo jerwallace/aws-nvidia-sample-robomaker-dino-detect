@@ -12,6 +12,12 @@ class MoveRobot:
     motor_right_ID = 2
     max_pwm = 115
 
+    speed_gain_slider = 0.25
+    steering_gain_slider = 0.11
+    steering_dgain_slider = 0.10
+    steering_bias_slider = 0.09
+
+
     def __init__(self):
         self.setup_motor_controller()
         self.init_subs()
@@ -63,6 +69,19 @@ class MoveRobot:
     # directional commands (degree, speed)
     def on_cmd_dir(self, msg):
         rospy.loginfo(rospy.get_caller_id() + ' cmd_dir=%s', msg.data)
+        move_dir_recv = json.loads(msg.data)
+        angle_cmd = move_dir_recv['angle']
+        stop_robot = move_dir_recv['stop_robot']
+
+        # TODO: convert form angle to motor commands here
+        '''
+        move_dir_sent['angle'] = self.angle
+        pid = self.angle * self.config['steering_gain_slider'] + (self.angle - self.angle_last) * self.config['steering_dgain_slider']
+        self.angle_last = self.angle
+        steering_slider = pid + self.config['steering_bias_slider']
+        move_data['left'] = max(min(self.config['speed_gain_slider'] + steering_slider, 1.0), 0.0)
+        move_data['right'] = max(min(self.config['speed_gain_slider'] - steering_slider, 1.0), 0.0)
+        '''
 
     # raw L/R motor commands (speed, speed)
     def on_cmd_raw(self, msg):
