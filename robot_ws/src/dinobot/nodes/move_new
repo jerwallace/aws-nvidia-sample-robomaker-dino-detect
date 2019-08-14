@@ -40,7 +40,7 @@ class MoveRobot:
             direction = Adafruit_MotorHAT.BACKWARD
         return speed, direction
 
-    def set_speed_and_direction(left_value=0, right_value=0):
+    def set_speed_and_direction(self, left_value=0, right_value=0):
         left_speed, left_direction = self.value_to_speed(left_value)
         right_speed,right_direction = self.value_to_speed(right_value)
 
@@ -92,6 +92,7 @@ class MoveRobot:
             # If you haven't received a move command in last 5 seconds, stop
             if rospy.Time.now() - self.last_known_command_time > rospy.Duration(5): 
                 self.all_stop()
+            rospy.sleep(0.5)
 
         # Final all stop before ending node
         self.all_stop()

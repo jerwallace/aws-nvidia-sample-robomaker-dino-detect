@@ -1,0 +1,184 @@
+#!/usr/bin/env python3
+import torch
+import torchvision
+import torch.nn.functional as F
+import time
+import datetime
+import numpy as np
+import cv2
+import torchvision.transforms as transforms
+import base64
+import json
+import random
+from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
+import rospy
+from std_msgs.msg import String
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge, CvBridgeError
+import PIL.Image
+
+
+class DinoDetect:
+	def __init__(self):
+		self.setup_data()
+		self.init_ros_pub_sub()
+
+	def init_ros_pub_sub(self):
+		self.pub = rospy.Publisher('move/cmd_raw', String)
+		self.image_sub = rospy.Subscriber("jetbot_camera/raw", Image, self.callback)
+
+	def setup_data(self):
+		self.IOT_HOST = "a8hgrxh4eewrt-ats.iot.us-east-1.amazonaws.com"
+		self.device = None
+		self.config = {
+			"i2c_bus": 0,
+			"speed_gain_slider": 0.25,
+			"steering_gain_slider" : 0.11,
+			"steering_dgain_slider" : 0.10,
+			"steering_bias_slider" : 0.09,
+			"prev_class" : -1,
+			"mean_values": [0.485, 0.456, 0.406],
+			"std_values": [0.229, 0.224, 0.225],
+			"np_value": 255.0,
+			"dino_names": [
+				"Spinosaurus",
+				"Dilophosaurus",
+				"Stegosaurus",
+				"Triceratops",
+				"Brachiosaurus",
+				"Unknown"],
+			"topic": "dino-detect",
+			"road_following_model": "/tmp/trained_models/best_steering_model_xy.pth",
+			"dino_detect_model": "/tmp/trained_models/best_dinodet_model_xy.pth",
+			"image_size": [224,224]
+		}
+		self.settings = {
+			"mean_roadfollow": None,
+			"std_roadfollow": None
+		}
+
+		self.mean = self.config['np_value'] * np.array(self.config['mean_values'])
+		self.stdev = self.config['np_value'] * np.array(self.config['std_values'])
+		self.normalize = torchvision.transforms.Normalize(mean, stdev)
+		self.mean_roadfollow = torch.Tensor([0.485, 0.456, 0.406]).cuda().half()
+		self.std_roadfollow = torch.Tensor([0.229, 0.224, 0.225]).cuda().half()
+		self.model_dinodet = None
+		self.model_roadfollow = None
+
+		self.angle = 0.0
+		self.angle_last = 0.0
+		self.iotClient = None
+
+		self.bridge = CvBridge()
+
+	def preprocess(self, camera_value_bgr):
+		camera_value_rgb = cv2.cvtColor(camera_value_bgr, cv2.COLOR_BGR2RGB)
+		camera_value_transpose = camera_value_rgb.transpose((2, 0, 1))
+		camera_value_float = torch.from_numpy(camera_value_transpose).float()
+		camera_value_norm = self.normalize(camera_value_float)
+		camera_value_to_device = camera_value_norm.to(self.device)
+		x = camera_value_to_device[None, ...]
+		return x
+
+	def preprocess_roadfollow(self, image):
+		image = PIL.Image.fromarray(image)
+		image = transforms.functional.to_tensor(image).to(self.device).half()
+		image.sub_(mean_roadfollow[:, None, None]).div_(std_roadfollow[:, None, None])
+		return image[None, ...]
+
+	def find_dino(self, change):
+		x = change['new'] 
+		x = preprocess(x)
+		y = self.model_dinodet(x)
+		y_dino = F.softmax(y, dim=1)
+		topk = y_dino.cpu().topk(1)
+		return (e.data.numpy().squeeze().tolist() for e in topk)
+
+	def move_bot(self, image, robot_stop):
+		move_data = {}
+		move_data['left'] = 0
+		move_data['right'] = 0
+
+		if robot_stop:
+			self.pub.publish(json.dumps(move_data))
+			time.sleep(2)
+			robot_stop = False
+		else:
+			xy = self.model_roadfollow(preprocess_roadfollow(image)).detach().float().cpu().numpy().flatten()
+			x = xy[0]
+			y = (0.5 - xy[1]) / 2.0
+			self.angle = np.arctan2(x, y)
+			pid = self.angle * self.config['steering_gain_slider'] + (self.angle - self.angle_last) * self.config['steering_dgain_slider']
+			self.angle_last = self.angle
+			steering_slider = pid + self.config['steering_bias_slider']
+			move_data['left'] = max(min(self.config['speed_gain_slider'] + steering_slider, 1.0), 0.0)
+			move_data['right'] = max(min(self.config['speed_gain_slider'] - steering_slider, 1.0), 0.0)
+			self.pub.publish(json.dumps(move_data))
+
+	def callback(self, data):
+		img = bridge.imgmsg_to_cv2(data, 'bgr8')
+		robot_stop = False
+		probs, classes = find_dino({'new': img}) 
+		prev_class = None
+		if probs > 0.6 and prev_class != classes:
+			prev_class = classes
+			robot_stop = True
+			if classes == 5:
+				rospy.loginfo("Found unknown dinosaur...")
+				message = {
+					"dinosaur": "unknown",
+					"confidence": str(probs),
+					"image": base64.b64encode(PIL.Image.fromarray(img))
+				}
+			else:
+				rospy.loginfo("Found %s...", self.config['dino_names'][classes])
+				message = {
+					"dinosaur": self.config['dino_names'][classes],
+					"confidence": str(probs),
+					"image": base64.b64encode(Image.fromarray(img))
+				}
+			self.iotClient.publish(self.config['topic'], json.dumps(message), 1)
+		move_bot(img, robot_stop)
+
+	def dino_detect(self):    
+		# Initialize the JetBot Robot.
+		rospy.loginfo("Starting cuda...")
+		self.device = torch.device('cuda')
+		rospy.loginfo("Initializing robot on I2C Bus %i...", self.config['i2c_bus'])
+
+		rospy.loginfo("Initializing ML models...")
+		rospy.loginfo("Road following model...")
+		self.model_roadfollow = torchvision.models.resnet18(pretrained=False)
+		self.model_roadfollow.fc = torch.nn.Linear(512, 2)
+		self.model_roadfollow.load_state_dict(torch.load(self.config['road_following_model']))
+		
+		model = self.model_roadfollow.to(self.device)
+		model = self.model_roadfollow.eval().half()
+
+		rospy.loginfo("Dino detection model...")
+		self.model_dinodet = torchvision.models.resnet18(pretrained=False)
+		self.model_dinodet.fc = torch.nn.Linear(512, 6)
+		self.model_dinodet.load_state_dict(torch.load(self.config['dino_detect_model']))
+
+		self.model_dinodet = self.model_dinodet.to(self.device)
+		self.model_dinodet = self.model_dinodet.eval()
+
+		prev_class = self.config['prev_class']
+
+		# Initialize the AWS IoT Connection based on AWS Greengrass self.config.
+		rospy.loginfo("Initializing AWS IoT...")
+		#self.iotClient = None
+		#self.iotClient = AWSIoTMQTTClient('jetbot'+str(random.randint(1,101))
+		#self.iotClient.configureEndpoint(IOT_HOST, 8843)
+		#self.iotClient.configureCredentials("../../share/dinobot/certs/root.ca.pem", "../../share/dinobot/certs/private.pem.key", "../../share/dinobot/certs/certificate.pem.crt")
+		rospy.loginfo("Starting application loop...")
+		#self.iotClient.connect()
+
+	def main(self):
+		rospy.spin()
+
+if __name__ == '__main__':
+	rospy.init_node('dino_detect', log_level=rospy.DEBUG)
+    dino = DinoDetect()
+    dino.main()
+
