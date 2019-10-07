@@ -1,6 +1,6 @@
 <launch>
   <include
-    file="$(find rover_gazebo)/launch/rover_rocky.launch" />
+    file="$(find gazebo)/launch/rover_rocky.launch" />
   <node
     name="tf_footprint_base"
     pkg="tf"
@@ -10,7 +10,7 @@
     name="spawn_model"
     pkg="gazebo_ros"
     type="spawn_model"
-    args="-file $(find rover_description)/urdf/rover_description.urdf -urdf -model rover"
+    args="-file $(find jetbot_description)/urdf/jetbot.urdf -urdf -model rover"
     output="screen" />
   <node
     name="fake_joint_calibration"

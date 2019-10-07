@@ -1,5 +1,5 @@
 <package format="2">
-  <name>rover_description</name>
+  <name>jetbot_description</name>
   <version>1.0.0</version>
   <description>
     <p>URDF Description package for rover</p>

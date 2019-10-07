@@ -1,13 +1,13 @@
  <launch>
      <param name="robot_description"
-        command="$(find xacro)/xacro --inorder '$(find rover_description)/urdf/rover_description.urdf' stereo_camera:=false"/>
+        command="$(find xacro)/xacro --inorder '$(find jetbot_description)/urdf/jetbot.urdf' stereo_camera:=false"/>
     
       <!-- Spawn a robot into Gazebo. -->
       <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
         args="-urdf -model rover -param robot_description -z 1 -x -2 -y -2"/>
     
       <!-- Load joint controller configurations from YAML file to parameter server -->
-      <rosparam file="$(find rover_description)/config/rover_control.yaml" command="load"/>
+      <rosparam file="$(find jetbot_description)/config/jetbot_control.yaml" command="load"/>
       
       <!-- load the controllers -->
       <node name="controller_spawner" ns="rover_ns" pkg="controller_manager" type="spawner" respawn="false" output="screen"  args="body_rocker_left_controller
@@ -31,7 +31,7 @@
         respawn="false" output="screen">
       </node>
       
-      <node name="motion" pkg="rover_description" type="motion" respawn="true" output="screen">
+      <node name="motion" pkg="jetbot_description" type="motion" respawn="true" output="screen">
       </node>
       
   </launch>
