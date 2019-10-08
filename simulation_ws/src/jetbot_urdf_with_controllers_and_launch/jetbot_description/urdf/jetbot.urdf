@@ -30,13 +30,13 @@
     <collision name="JetBot__collision">
       <origin rpy="1.57079  0       1.57079" xyz="0     0     0.043"/>
       <geometry>
-        <mesh filename="package://jetbot_ros/gazebo/jetbot/meshes/JetBot-v3-Chassis.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://jetbot_description/meshes/JetBot-v3-Chassis.dae" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
     <visual name="JetBot__visual">
       <origin rpy="1.57079  0       1.57079" xyz="0     0     0.043"/>
       <geometry>
-        <mesh filename="package://jetbot_ros/gazebo/jetbot/meshes/JetBot-v3-Chassis.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://jetbot_description/meshes/JetBot-v3-Chassis.dae" scale="0.001 0.001 0.001"/>
       </geometry>
     </visual>
   </link>
@@ -49,13 +49,13 @@
     <collision name="JetBot__collision">
       <origin rpy="0  0  0" xyz="0  0  0"/>
       <geometry>
-        <mesh filename="package://jetbot_ros/gazebo/jetbot/meshes/JetBot-v3-Wheel.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://jetbot_description/meshes/JetBot-v3-Wheel.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
     <visual name="JetBot__visual">
       <origin rpy="0  0  0" xyz="0  0  0"/>
       <geometry>
-        <mesh filename="package://jetbot_ros/gazebo/jetbot/meshes/JetBot-v3-Wheel.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://jetbot_description/meshes/JetBot-v3-Wheel.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </visual>
   </link>
@@ -68,13 +68,13 @@
     <collision name="JetBot__collision">
       <origin rpy="0  0  0" xyz="0  0  0"/>
       <geometry>
-        <mesh filename="package://jetbot_ros/gazebo/jetbot/meshes/JetBot-v3-Wheel.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://jetbot_description/meshes/JetBot-v3-Wheel.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
     <visual name="JetBot__visual">
       <origin rpy="0  0  0" xyz="0  0  0"/>
       <geometry>
-        <mesh filename="package://jetbot_ros/gazebo/jetbot/meshes/JetBot-v3-Wheel.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://jetbot_description/meshes/JetBot-v3-Wheel.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </visual>
   </link>
