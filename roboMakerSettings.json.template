@@ -44,11 +44,11 @@
         "robotApp": {
           "name": "RoboMakerDinoBotRobot",
           "sourceBundleFile": "./dino-detect/robot_ws/bundle/output.tar",
-          "s3Bucket": "dino-detect-us-east-1-rmw-assets",
+          "s3Bucket": "<REPLACE WITH S3 BUCKET>",
           "architecture": "X86_64",
           "launchConfig": {
             "packageName": "dinobot",
-            "launchFile": "start_search.launch",
+            "launchFile": "<REPLACE WITH LAUNCH FILE>",
             "environmentVariables": {}
           },
           "robotSoftwareSuite": {
@@ -60,10 +60,10 @@
           "name": "RoboMakerDinoBotSimulation",
           "sourceBundleFile": "./dino-detect/simulation_ws/bundle/output.tar",
           "architecture": "X86_64",
-          "s3Bucket": "dino-detect-us-east-1-rmw-assets",
+          "s3Bucket": "<REPLACE WITH S3 BUCKET>",
           "launchConfig": {
             "packageName": "gazebo",
-            "launchFile": "main_with_objects.launch",
+            "launchFile": "<REPLACE WITH LAUNCH FILE>",
             "environmentVariables": {}
           },
           "simulationSoftwareSuite": {
@@ -82,16 +82,11 @@
         "simulation": {
           "maxJobDurationInSeconds": 3600,
           "failureBehavior": "Continue",
-          "iamRole": "arn:aws:iam::295308704900:role/robomaker-simulation-role",
-          "outputLocation": "dino-detect-us-east-1-rmw-assets",
+          "iamRole": "",
+          "outputLocation": "<REPLACE WITH S3 BUCKET>",
           "vpcConfig": {
-            "subnets": [
-              "subnet-0fc4e6382b98dda2d",
-              "subnet-0cdc4deef3e04571b"
-            ],
-            "securityGroups": [
-              "sg-06ca2e9eb9fbd068e"
-            ]
+            "subnets": [],
+            "securityGroups": []
           },
           "tags": {}
         }
