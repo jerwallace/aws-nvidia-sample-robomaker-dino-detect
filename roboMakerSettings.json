@@ -41,9 +41,47 @@
       "name": "DinoBot",
       "type": "simulation",
       "cfg": {
+        "robotApp": {
+          "name": "RoboMakerDinoBotRobot",
+          "sourceBundleFile": "./dino-detect/robot_ws/bundle/output.tar",
+          "s3Bucket": "dino-detect-us-east-1-rmw-assets",
+          "architecture": "X86_64",
+          "launchConfig": {
+            "packageName": "dinobot",
+            "launchFile": "start_search.launch",
+            "environmentVariables": {}
+          },
+          "robotSoftwareSuite": {
+            "name": "ROS",
+            "version": "Melodic"
+          }
+        },
+        "simulationApp": {
+          "name": "RoboMakerDinoBotSimulation",
+          "sourceBundleFile": "./dino-detect/simulation_ws/bundle/output.tar",
+          "architecture": "X86_64",
+          "s3Bucket": "dino-detect-us-east-1-rmw-assets",
+          "launchConfig": {
+            "packageName": "gazebo",
+            "launchFile": "main_with_objects.launch",
+            "environmentVariables": {}
+          },
+          "simulationSoftwareSuite": {
+            "name": "Gazebo",
+            "version": "9"
+          },
+          "renderingEngine": {
+            "name": "OGRE",
+            "version": "1.x"
+          },
+          "robotSoftwareSuite": {
+            "name": "ROS",
+            "version": "Melodic"
+          }
+        },
         "simulation": {
-          "maxJobDurationInSeconds": 14400,
-          "failureBehavior": "Fail",
+          "maxJobDurationInSeconds": 3600,
+          "failureBehavior": "Continue",
           "iamRole": "arn:aws:iam::295308704900:role/robomaker-simulation-role",
           "outputLocation": "dino-detect-us-east-1-rmw-assets",
           "vpcConfig": {
@@ -56,43 +94,6 @@
             ]
           },
           "tags": {}
-        },
-        "robotApp": {
-          "name": "RoboMakerDinoBotRobot",
-          "sourceBundleFile": "./dino-detect/robot_ws/bundle/output.tar",
-          "s3Bucket": "dino-detect-us-east-1-rmw-assets",
-          "architecture": "X86_64",
-          "launchConfig": {
-            "packageName": "dinobot",
-            "launchFile": "start_search.launch",
-            "environmentVariables": {}
-          },
-          "robotSoftwareSuite": {
-            "version": "Melodic",
-            "name": "ROS"
-          }
-        },
-        "simulationApp": {
-          "name": "RoboMakerDinoBotSimulation",
-          "sourceBundleFile": "./dino-detect/simulation_ws/bundle/output.tar",
-          "architecture": "X86_64",
-          "s3Bucket": "dino-detect-us-east-1-rmw-assets",
-          "launchConfig": {
-            "packageName": "gazebo",
-            "launchFile": "main_with_objects.launch"
-          },
-          "simulationSoftwareSuite": {
-            "name": "Gazebo",
-            "version": "7"
-          },
-          "renderingEngine": {
-            "name": "OGRE",
-            "version": "1.x"
-          },
-          "robotSoftwareSuite": {
-            "name": "ROS",
-            "version": "Melodic"
-          }
         }
       }
     },
