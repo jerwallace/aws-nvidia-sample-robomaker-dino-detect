@@ -1,6 +1,4 @@
 <launch>
-  <include
-    file="$(find gazebo)/launch/rover_rocky.launch" />
   <node
     name="tf_footprint_base"
     pkg="tf"
