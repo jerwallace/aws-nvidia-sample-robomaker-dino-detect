@@ -7,6 +7,7 @@
     <axis xyz="1  0  0"/>
     <limit effort="0" lower="0" upper="0" velocity="0"/>
   </joint>
+
   <joint name="JetBot__right_wheel_hinge" type="fixed">
     <parent link="JetBot__chassis"/>
     <child link="JetBot__right_wheel"/>
@@ -14,6 +15,7 @@
     <axis xyz="1  0  0"/>
     <limit effort="0" lower="0" upper="0" velocity="0"/>
   </joint>
+
   <joint name="JetBot__camera_joint" type="fixed">
     <parent link="JetBot__chassis"/>
     <child link="JetBot__camera_link"/>
@@ -21,6 +23,7 @@
     <axis xyz="0.96891  0       0.2474"/>
     <limit effort="0" lower="0" upper="0" velocity="0"/>
   </joint>
+
   <link name="JetBot__chassis">
     <inertial>
       <mass value="0"/>
@@ -40,6 +43,7 @@
       </geometry>
     </visual>
   </link>
+
   <link name="JetBot__left_wheel">
     <inertial>
       <mass value="0"/>
@@ -59,6 +63,7 @@
       </geometry>
     </visual>
   </link>
+
   <link name="JetBot__right_wheel">
     <inertial>
       <mass value="0"/>
@@ -78,6 +83,7 @@
       </geometry>
     </visual>
   </link>
+
   <link name="JetBot__camera_link">
     <inertial>
       <mass value="0.1"/>
