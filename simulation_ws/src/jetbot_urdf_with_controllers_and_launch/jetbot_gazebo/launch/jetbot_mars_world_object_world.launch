@@ -7,7 +7,7 @@
 	<arg name="headless" default="false"/>
 	<arg name="debug" default="false"/>
 	<arg name="verbose" default="true" />
-    <arg name="world" default="$(find jetbot_gazebo)/worlds/mars-with-objects.world"/>
+  <arg name="world" default="$(find gazebo_ros)/worlds/mars-with-objects.world"/>
 
 	<include file="$(find gazebo_ros)/launch/empty_world.launch">
 		<arg name="world_name" value="$(arg world)"/>
@@ -18,5 +18,21 @@
 		<arg name="headless" value="$(arg headless)"/>
 		<arg name="verbose" value="$(arg verbose)" />
 	</include>
+
+
+  <!-- Load the URDF into the ROS Parameter Server. -->
+  <arg name="model" default="jetbot"/>
+
+  <param 
+    name="robot_description" 
+    command="$(find xacro)/xacro --inorder '$(find jetbot_description)/urdf/jetbot.urdf' stereo_camera:=false"/>
+
+  <node 
+    pkg="gazebo_ros" 
+    type="spawn_model" 
+    name="urdf_spawner" 
+    respawn="false" 
+    output="screen" 
+    args="-urdf -model $(arg model) -param robot_description -z 1 -x -2 -y -2"/>
 
 </launch>
