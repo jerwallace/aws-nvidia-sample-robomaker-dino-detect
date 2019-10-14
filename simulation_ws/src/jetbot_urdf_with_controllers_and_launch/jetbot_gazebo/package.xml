@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>gazebo</name>
+  <name>jetbot_gazebo</name>
   <version>0.0.0</version>
   <description>The jetbot-gazebo package</description>
   <author email="ros-contributions@amazon.com">AWS RoboMaker</author>
