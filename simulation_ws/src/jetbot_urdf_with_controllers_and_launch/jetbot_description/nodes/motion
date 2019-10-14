@@ -20,7 +20,7 @@ import rospy
 from std_msgs.msg import Float64
 from geometry_msgs.msg import Twist
 
-class OSRMotionControl:
+class JetBotMotionControl:
     """ This class provides motion control and initializes the various motor controllers for the open source rover"""
 
     def __init__(self):
@@ -36,8 +36,8 @@ class OSRMotionControl:
         self.controller_command = "command"
 
         self.publishers = {
-                "corner_lf_wheel_lf_controller": None,
-                "corner_rf_wheel_rf_controller": None,
+                "left_wheel_controller": None,
+                "right_wheel_controller": None,
                 "joint_state_controller": None
         }
 
@@ -63,10 +63,10 @@ class OSRMotionControl:
     # Max value: 100, Min value: -100
     def send_motor_command(self, data):
         """ Send motor commands to each wheel motor controller."""
-        rospy.loginfo(data)
+        rospy.loginfo("Received motor command: %s, %s", *data)
         v_l, v_r = data
-        self.publishers['corner_lf_wheel_lf_controller'].publish( v_l )
-        self.publishers['corner_rf_wheel_rf_controller'].publish( v_r )
+        self.publishers['left_wheel_controller'].publish( v_l )
+        self.publishers['right_wheel_controller'].publish( v_r )
 
     # Max rotation is 45 degrees.
     def send_steering_command(self, data):
@@ -107,17 +107,17 @@ class OSRMotionControl:
 if __name__ == "__main__":
     rospy.init_node("motion")
     rospy.loginfo("Starting the motion node...")
-    osr_motion = OSRMotionControl()
+    jb_motion = JetBotMotionControl()
     rate = rospy.Rate(10.0)
     rospy.loginfo("Listening...")
     while not rospy.is_shutdown():
-        osr_motion.move_with_cmd_vel()
+        jb_motion.move_with_cmd_vel()
         rate.sleep()
 
 
 '''
 # --------- Topic list ----------
 # Wheels
-/rover_ns/corner_lf_wheel_lf_controller/command
-/rover_ns/corner_rf_wheel_rf_controller/command
+/rover_ns/left_wheel_controller/command
+/rover_ns/right_wheel_controller/command
 '''

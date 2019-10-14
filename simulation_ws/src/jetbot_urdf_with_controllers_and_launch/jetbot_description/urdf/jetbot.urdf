@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <robot name="JetBot">
-  <joint name="JetBot__left_wheel_hinge" type="fixed">
+  <joint name="JetBot__left_wheel_hinge" type="continuous">
     <parent link="JetBot__chassis"/>
     <child link="JetBot__left_wheel"/>
     <origin rpy="0       0       1.57079" xyz="0.03     0.05125  0.03"/>
@@ -8,13 +8,35 @@
     <limit effort="0" lower="0" upper="0" velocity="0"/>
   </joint>
 
-  <joint name="JetBot__right_wheel_hinge" type="fixed">
+  <transmission name="tran_jetbot_left_wheel_hinge">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="JetBot__left_wheel_hinge">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor_left_wheel">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <joint name="JetBot__right_wheel_hinge" type="continuous">
     <parent link="JetBot__chassis"/>
     <child link="JetBot__right_wheel"/>
     <origin rpy="0       0       1.57079" xyz="0.03   -0.0595  0.03"/>
     <axis xyz="1  0  0"/>
     <limit effort="0" lower="0" upper="0" velocity="0"/>
   </joint>
+
+  <transmission name="tran_jetbot_right_wheel_hinge">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="JetBot__right_wheel_hinge">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor_right_wheel">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
 
   <joint name="JetBot__camera_joint" type="fixed">
     <parent link="JetBot__chassis"/>
@@ -26,9 +48,9 @@
 
   <link name="JetBot__chassis">
     <inertial>
-      <mass value="0"/>
+      <mass value="0.5"/>
       <origin rpy="0  0  0" xyz="0  0  0"/>
-      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="-5.0E-08" izz="0"/>
     </inertial>
     <collision name="JetBot__collision">
       <origin rpy="1.57079  0       1.57079" xyz="0     0     0.043"/>
@@ -46,7 +68,7 @@
 
   <link name="JetBot__left_wheel">
     <inertial>
-      <mass value="0"/>
+      <mass value="0.01"/>
       <origin rpy="0  0  0" xyz="0  0  0"/>
       <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
     </inertial>
@@ -66,7 +88,7 @@
 
   <link name="JetBot__right_wheel">
     <inertial>
-      <mass value="0"/>
+      <mass value="0.01"/>
       <origin rpy="0  0  0" xyz="0  0  0"/>
       <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
     </inertial>
@@ -97,4 +119,14 @@
       </geometry>
     </visual>
   </link>
+
+  <!-- ROS control plugin -->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>rover_ns</robotNamespace>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+      <legacyModeNS>true</legacyModeNS>
+    </plugin>
+  </gazebo>
+
 </robot>
