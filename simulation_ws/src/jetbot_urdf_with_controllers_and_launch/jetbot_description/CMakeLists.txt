@@ -13,6 +13,6 @@ catkin_install_python(PROGRAMS
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
-install(DIRECTORY config launch meshes urdf
+install(DIRECTORY config launch meshes urdf rviz
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${dir}
 )
