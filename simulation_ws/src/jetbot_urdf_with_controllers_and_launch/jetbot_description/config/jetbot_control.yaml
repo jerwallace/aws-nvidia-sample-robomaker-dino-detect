@@ -14,25 +14,25 @@ rover_ns:
     joint: "JetBot__right_wheel_hinge"
     pid: {p: .2, i: 0.5, d: 0}
 
-  # joint_limits:
-  #   # Wheel joints
-  #   JetBot__left_wheel_hinge:
-  #     has_position_limits: false
-  #     has_velocity_limits: true
-  #     max_velocity: 10.0
-  #     has_acceleration_limits: true
-  #     max_acceleration: 1
-  #     has_jerk_limits: true
-  #     max_jerk: 10.0
-  #     has_effort_limits: true
-  #     max_effort: 0.5
-  #   JetBot__right_wheel_hinge:
-  #     has_position_limits: false
-  #     has_velocity_limits: true
-  #     max_velocity: 10.0
-  #     has_acceleration_limits: true
-  #     max_acceleration: 1
-  #     has_jerk_limits: true
-  #     max_jerk: 10.0
-  #     has_effort_limits: true
-  #     max_effort: 0.5
+  joint_limits:
+    # Wheel joints
+    JetBot__left_wheel_hinge:
+      has_position_limits: false
+      has_velocity_limits: true
+      max_velocity: 10.0
+      has_acceleration_limits: true
+      max_acceleration: 1
+      has_jerk_limits: true
+      max_jerk: 10.0
+      has_effort_limits: true
+      max_effort: 0.5
+    JetBot__right_wheel_hinge:
+      has_position_limits: false
+      has_velocity_limits: true
+      max_velocity: 10.0
+      has_acceleration_limits: true
+      max_acceleration: 1
+      has_jerk_limits: true
+      max_jerk: 10.0
+      has_effort_limits: true
+      max_effort: 0.5
