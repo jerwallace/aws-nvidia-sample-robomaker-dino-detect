@@ -5,7 +5,7 @@
     <child link="JetBot__left_wheel"/>
     <origin rpy="0       0       1.57079" xyz="0.03     0.05125  0.03"/>
     <axis xyz="1  0  0"/>
-    <limit effort="0" lower="0" upper="0" velocity="0"/>
+    <limit effort="30" velocity="1.0"/>
   </joint>
 
   <transmission name="tran_jetbot_left_wheel_hinge">
@@ -14,7 +14,6 @@
       <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
     </joint>
     <actuator name="motor_left_wheel">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
@@ -24,7 +23,7 @@
     <child link="JetBot__right_wheel"/>
     <origin rpy="0       0       1.57079" xyz="0.03   -0.0595  0.03"/>
     <axis xyz="1  0  0"/>
-    <limit effort="0" lower="0" upper="0" velocity="0"/>
+    <limit effort="30" velocity="1.0"/>
   </joint>
 
   <transmission name="tran_jetbot_right_wheel_hinge">
@@ -33,7 +32,6 @@
       <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
     </joint>
     <actuator name="motor_right_wheel">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
