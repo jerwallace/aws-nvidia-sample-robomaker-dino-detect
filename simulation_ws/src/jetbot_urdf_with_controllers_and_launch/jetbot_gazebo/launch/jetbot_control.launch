@@ -7,9 +7,9 @@
   <!-- load the controllers -->
 
   <node 
+    name="jetbot_controller_spawner" 
     pkg="controller_manager" 
     type="spawner" 
-    name="controller_spawner" 
     respawn="false" 
     output="screen" 
     ns="rover_ns" 
