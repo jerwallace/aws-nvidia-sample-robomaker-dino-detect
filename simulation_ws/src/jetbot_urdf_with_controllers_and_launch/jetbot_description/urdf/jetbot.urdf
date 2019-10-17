@@ -45,7 +45,7 @@
 
   <link name="JetBot__chassis">
     <inertial>
-      <mass value="5.0"/>
+      <mass value="2.5"/>
       <origin rpy="0  0  0" xyz="0  0  0"/>
       <inertia ixx="1e-3" ixy="0" ixz="0" iyy="1e-3" iyz="0" izz="1e-3"/>
     </inertial>
@@ -65,7 +65,7 @@
 
   <link name="JetBot__left_wheel">
     <inertial>
-      <mass value="1.5"/>
+      <mass value="0.5"/>
       <origin rpy="0  0  0" xyz="0  0  0"/>
       <inertia ixx="1e-3" ixy="0" ixz="0" iyy="1e-3" iyz="0" izz="1e-3"/>
     </inertial>
@@ -85,7 +85,7 @@
 
   <link name="JetBot__right_wheel">
     <inertial>
-      <mass value="1.5"/>
+      <mass value="0.5"/>
       <origin rpy="0  0  0" xyz="0  0  0"/>
       <inertia ixx="1e-3" ixy="0" ixz="0" iyy="1e-3" iyz="0" izz="1e-3"/>
     </inertial>
