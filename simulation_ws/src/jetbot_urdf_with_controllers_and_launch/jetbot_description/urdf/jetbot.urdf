@@ -41,14 +41,13 @@
     <child link="JetBot__camera_link"/>
     <origin rpy="0    0.25  0" xyz="0.055   0      0.0857"/>
     <axis xyz="0.96891  0       0.2474"/>
-    <limit effort="0" lower="0" upper="0" velocity="0"/>
   </joint>
 
   <link name="JetBot__chassis">
     <inertial>
-      <mass value="0.5"/>
+      <mass value="5.0"/>
       <origin rpy="0  0  0" xyz="0  0  0"/>
-      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="-5.0E-08" izz="0"/>
+      <inertia ixx="1e-3" ixy="0" ixz="0" iyy="1e-3" iyz="0" izz="1e-3"/>
     </inertial>
     <collision name="JetBot__collision">
       <origin rpy="1.57079  0       1.57079" xyz="0     0     0.043"/>
@@ -66,9 +65,9 @@
 
   <link name="JetBot__left_wheel">
     <inertial>
-      <mass value="0.01"/>
+      <mass value="1.5"/>
       <origin rpy="0  0  0" xyz="0  0  0"/>
-      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+      <inertia ixx="1e-3" ixy="0" ixz="0" iyy="1e-3" iyz="0" izz="1e-3"/>
     </inertial>
     <collision name="JetBot__collision">
       <origin rpy="0  0  0" xyz="0  0  0"/>
@@ -86,9 +85,9 @@
 
   <link name="JetBot__right_wheel">
     <inertial>
-      <mass value="0.01"/>
+      <mass value="1.5"/>
       <origin rpy="0  0  0" xyz="0  0  0"/>
-      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+      <inertia ixx="1e-3" ixy="0" ixz="0" iyy="1e-3" iyz="0" izz="1e-3"/>
     </inertial>
     <collision name="JetBot__collision">
       <origin rpy="0  0  0" xyz="0  0  0"/>
