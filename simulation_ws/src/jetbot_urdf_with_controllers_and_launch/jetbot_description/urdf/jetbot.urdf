@@ -1,11 +1,12 @@
 <?xml version="1.0" ?>
 <robot name="JetBot">
+  <property name="M_PI_2" value="1.570796327"/>
+
   <joint name="JetBot__left_wheel_hinge" type="continuous">
     <parent link="JetBot__chassis"/>
     <child link="JetBot__left_wheel"/>
     <origin rpy="0       0       1.57079" xyz="0.03     0.05125  0.03"/>
     <axis xyz="1  0  0"/>
-    <limit effort="30" velocity="1.0"/>
   </joint>
 
   <transmission name="tran_jetbot_left_wheel_hinge">
@@ -24,7 +25,6 @@
     <child link="JetBot__right_wheel"/>
     <origin rpy="0       0       1.57079" xyz="0.03   -0.0595  0.03"/>
     <axis xyz="1  0  0"/>
-    <limit effort="30" velocity="1.0"/>
   </joint>
 
   <transmission name="tran_jetbot_right_wheel_hinge">
@@ -66,7 +66,7 @@
 
   <link name="JetBot__left_wheel">
     <inertial>
-      <mass value="0.5"/>
+      <mass value="0.1"/>
       <origin rpy="0  0  0" xyz="0  0  0"/>
       <inertia ixx="1e-3" ixy="0" ixz="0" iyy="1e-3" iyz="0" izz="1e-3"/>
     </inertial>
@@ -86,7 +86,7 @@
 
   <link name="JetBot__right_wheel">
     <inertial>
-      <mass value="0.5"/>
+      <mass value="0.1"/>
       <origin rpy="0  0  0" xyz="0  0  0"/>
       <inertia ixx="1e-3" ixy="0" ixz="0" iyy="1e-3" iyz="0" izz="1e-3"/>
     </inertial>
@@ -106,7 +106,7 @@
 
   <link name="JetBot__camera_link">
     <inertial>
-      <mass value="0.1"/>
+      <mass value="0.01"/>
       <origin rpy="0  0  0" xyz="0  0  0"/>
       <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
     </inertial>

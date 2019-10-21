@@ -19,17 +19,4 @@
     output="screen" 
     args="jetbot_diff_controller"/>
 
-  <!-- convert joint states to TF transforms for rviz, etc -->
-
-  <!-- <node  -->
-  <!--   pkg="robot_state_publisher"  -->
-  <!--   type="robot_state_publisher"  -->
-  <!--   name="robot_state_publisher"  -->
-  <!--   respawn="false"  -->
-  <!--   output="screen"> -->
-  <!--   <remap from="/joint_states" to="/rover_ns/joint_states"/> -->
-  <!-- </node> -->
-
-  <!-- <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" /> -->
-  <!-- <node pkg="jetbot_description" type="motion" name="motion" respawn="true" output="screen"/> -->
 </launch>
