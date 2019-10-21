@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="model" default="$(find jetbot_description)/urdf/jetbot.urdf"/>
+
+  <include file="$(find jetbot_description)/launch/gazebo.launch">
+    <arg name="model" value="$(arg model)" />
+  </include>
+
+  <!-- Load joint controller configurations from YAML file to parameter server -->
+  <rosparam command="load"
+    file="$(find jetbot_description)/config/jetbot_diff_drive_control.yaml" 
+    ns="jetbot_diff_controller"/>
+
+  <!-- load the controllers -->
+
+  <node name="jetbot_controller_spawner" pkg="controller_manager" type="spawner"
+    respawn="false" 
+    output="screen" 
+    args="jetbot_diff_controller"/>
+
+  <!-- convert joint states to TF transforms for rviz, etc -->
+
+  <!-- <node  -->
+  <!--   pkg="robot_state_publisher"  -->
+  <!--   type="robot_state_publisher"  -->
+  <!--   name="robot_state_publisher"  -->
+  <!--   respawn="false"  -->
+  <!--   output="screen"> -->
+  <!--   <remap from="/joint_states" to="/rover_ns/joint_states"/> -->
+  <!-- </node> -->
+
+  <!-- <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" /> -->
+  <!-- <node pkg="jetbot_description" type="motion" name="motion" respawn="true" output="screen"/> -->
+</launch>

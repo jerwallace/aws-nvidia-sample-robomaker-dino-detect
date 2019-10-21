@@ -11,10 +11,11 @@
   <transmission name="tran_jetbot_left_wheel_hinge">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="JetBot__left_wheel_hinge">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
     </joint>
     <actuator name="motor_left_wheel">
       <mechanicalReduction>1</mechanicalReduction>
+      <hardwareInterface>VelocityJointInterface</hardwareInterface>
     </actuator>
   </transmission>
 
@@ -29,7 +30,7 @@
   <transmission name="tran_jetbot_right_wheel_hinge">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="JetBot__right_wheel_hinge">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
     </joint>
     <actuator name="motor_right_wheel">
       <mechanicalReduction>1</mechanicalReduction>
@@ -45,7 +46,7 @@
 
   <link name="JetBot__chassis">
     <inertial>
-      <mass value="2.5"/>
+      <mass value="1.0"/>
       <origin rpy="0  0  0" xyz="0  0  0"/>
       <inertia ixx="1e-3" ixy="0" ixz="0" iyy="1e-3" iyz="0" izz="1e-3"/>
     </inertial>
@@ -70,9 +71,9 @@
       <inertia ixx="1e-3" ixy="0" ixz="0" iyy="1e-3" iyz="0" izz="1e-3"/>
     </inertial>
     <collision name="JetBot__collision">
-      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <origin rpy="0  ${M_PI_2} 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://jetbot_description/meshes/JetBot-v3-Wheel.stl" scale="0.001 0.001 0.001"/>
+        <cylinder radius="0.030" length="0.008"/>
       </geometry>
     </collision>
     <visual name="JetBot__visual">
@@ -90,9 +91,9 @@
       <inertia ixx="1e-3" ixy="0" ixz="0" iyy="1e-3" iyz="0" izz="1e-3"/>
     </inertial>
     <collision name="JetBot__collision">
-      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <origin rpy="0  ${M_PI_2} 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://jetbot_description/meshes/JetBot-v3-Wheel.stl" scale="0.001 0.001 0.001"/>
+        <cylinder radius="0.030" length="0.008"/>
       </geometry>
     </collision>
     <visual name="JetBot__visual">
@@ -120,9 +121,7 @@
   <!-- ROS control plugin -->
   <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-      <robotNamespace>rover_ns</robotNamespace>
-      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
-      <legacyModeNS>true</legacyModeNS>
+      <robotNamespace>/</robotNamespace>
     </plugin>
   </gazebo>
 
