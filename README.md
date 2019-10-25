@@ -17,8 +17,8 @@ First, sign into the AWS Management Console and click on AWS RoboMaker. Create a
     ``` 
 4. Next, we need to create a set of IoT credentials, so our application can communicate with AWS IoT. Run the following shell script to generate these:
     ``` 
-        sudo chmod +x -r scripts
-        . scripts/greengrass_init.sh
+        sudo chmod -R +x scripts/*.sh
+        . scripts/generate_certs.sh
     ``` 
 5. Now, we are ready to create our cross-compiler docker image. First, open the file cross-compiler/Dockerfile in the Cloud9 editor window. At the top of the file you will see a few arguments. 
 6. In Cloud9, open a seperate terminal window as this command will take a while.
